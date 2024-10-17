@@ -33,14 +33,14 @@
           </button>
         </h2>
         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#acordeonCentrado">
-          <div class="accordion-body mb-12" >
+          <div id="accordion" class="accordion-body mb-12" >
             
             <!-- ********-->
             <!-- ******************-->
             <!-- **************************--> 
             <!-- Estos div solamente son ejemplos se tienen que borrar y crear con el dom -->
 
-            <div class="card mb-12 espacio">
+           <!-- <div class="card mb-12 espacio">
                 <div class="row g-0">
                   <div class="col-md-2">
                     <img src="img/usuarios/avatar_a.png" class="img-fluid rounded-start">
@@ -53,7 +53,7 @@
                   </div>
                 </div>
             </div>
-            
+          -->
 
             <!-- **************************-->
             <!-- ******************-->
@@ -79,8 +79,21 @@
             <!-- ******************-->
             <!-- **************************--> 
             <!-- AQUÏ VA TU FORMULARIO -->
-            <form class="mb-10">
-                
+            <form class="mb-10" id="formulario">
+              <label>Usuario:</label>
+              <select id="selectUsuarios">
+                <option>---</option>
+                <option id="Juan" value="Juan">Juan</option>
+                <option id="Ana" value="Ana">Ana</option>
+                <option id="Sara" value="Sara">Sara</option>
+              </select>
+              <label>Titulo:</label>
+              <input id="inputTitulo" type="text">
+              <label>Importe:</label>
+              <input id="inputImporte" type="text">
+              <label>Fecha:</label>
+              <input id="inputFecha" type="text">
+              <input id="btnEnviar" type="submit">
             </form>
             <!-- **************************-->
             <!-- ******************-->
