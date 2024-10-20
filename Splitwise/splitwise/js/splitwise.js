@@ -1,3 +1,6 @@
+//Estan declaradas como variables globales porque las necesito utilizar varias veces
+let gastoUsuario = 0;
+let gastoDebido = 0;
 class Usuario {
     constructor(nombre, pathImg) {
         this.nombre = nombre;
@@ -46,6 +49,81 @@ class Usuario {
         let contenedor = document.getElementById("accordion");
         contenedor.append(divPrincipal);
     }
+
+    mostrarCuenta(gastoUsuario, gastoDebido, indice){
+        let divPrincipal = document.createElement("div");
+        divPrincipal.setAttribute("class", "card mb-12 espacio");
+        let divSecundario = document.createElement("div");
+        divSecundario.setAttribute("class", "row g-0");
+        let divImagen = document.createElement("div");
+        divImagen.setAttribute("class", "col-md-2");
+        let imagen = document.createElement("img");
+        imagen.setAttribute("src", this.pathImg);
+        imagen.setAttribute("class", "img-fluid rounded-start");
+        let divCarta = document.createElement("div");
+        divCarta.setAttribute("class", "col-md-10");
+        let divCartaCuerpo = document.createElement("div");
+        divCartaCuerpo.setAttribute("class", "card-body");
+        let tituloCarta = document.createElement("h5");
+        tituloCarta.setAttribute("class", "card-title");
+        tituloCarta.textContent = this.nombre;
+        let parrafo = document.createElement("p");
+        parrafo.setAttribute("id",`parrafo${indice}`);
+        parrafo.setAttribute("class", "card-text");
+        parrafo.textContent = "Ha pagado " + gastoUsuario + " se le debe " + gastoDebido;
+        divImagen.append(imagen);
+        divCartaCuerpo.append(tituloCarta, parrafo);
+        divCarta.append(divCartaCuerpo);
+        divSecundario.append(divImagen, divCarta);
+        divPrincipal.append(divSecundario);
+        let contenedor = document.getElementById("accordion-three");
+        contenedor.append(divPrincipal);
+    }
+
+
+    calcularGastos() {
+        //Gasto total que hay que pagar entre todos los usuarios
+        let gastoTotal = 0;
+        //Gasto que tendra que pagar cada usuario
+        let gastoPorPersona = 0;
+        //Gasto que debera o le deberan a cada usuario
+         gastoDebido = 0;
+        //Recorremos los bucles de usuario y de gastos para calcular el gasto total que se tiene que pagar entre todos
+        for (let indice = 0; indice < usuarios.length; indice++) {
+            for (let i = 0; i < usuarios[indice].gastos.length; i++) {
+                gastoTotal += parseFloat(usuarios[indice].gastos[i].monto);
+            }
+        }
+
+        //Dividimos el gasto total entre todos los usuarios para saber cuanto tiene que pagar cada uno
+        gastoPorPersona = gastoTotal / usuarios.length;
+
+        //Volvemos a recorrer los bucles para calcular el gasto que debe cada usuario
+        for (let indice = 0; indice < usuarios.length; indice++) {
+            //Gasto total de cada usuario
+            gastoUsuario = 0;
+            for (let i = 0; i < usuarios[indice].gastos.length; i++) {
+                gastoUsuario += parseFloat(usuarios[indice].gastos[i].monto);
+            }
+            //Calculamos lo que debe cada uno restando lo que tiene que pagar cada uno por lo que ya ha pagado
+            gastoDebido = gastoUsuario - gastoPorPersona;
+            //Obtengo el parrafo por su id dinamico
+            let parrafo = document.getElementById(`parrafo${indice}`);
+            //Si el gastoDebido es mayor que cero implica que se te debe dinero
+            if(gastoDebido > 0){
+                //Utilizamos toFixed() en el gasto debido para que se quede solo con dos decimales
+                parrafo.textContent = parrafo.textContent = "Ha pagado " + gastoUsuario + " se le debe " + gastoDebido.toFixed(2);
+            
+            //Si el gastoDebido es menor que cero implica que debes dinero
+            }else if(gastoDebido < 0){
+                parrafo.textContent = parrafo.textContent = "Ha pagado " + gastoUsuario + " debe " + gastoDebido.toFixed(2);
+                
+            }else{
+                parrafo.textContent = parrafo.textContent = "Ha pagado todo y no debe nada";
+            }
+        }
+    }
+
 }
 
 
@@ -64,7 +142,6 @@ class Gasto {
         this.monto = monto;
         this.fecha = fecha;
     }
-    // Completar con los métodos necesarios
 }
 
 let btnEnviar = document.getElementById("btnEnviar");
@@ -105,6 +182,7 @@ btnEnviar.addEventListener("click", (event) => {
             //Buscamos la posicion en el array del usuario que tiene el nombre igual al valor seleccionado en el select
             let posicion = usuarios.findIndex(usuario => usuario.nombre === select.value);
             usuarios[posicion].añadirGasto();
+            usuarios[posicion].calcularGastos();
             usuarios[posicion].mostrarResumen();
             //Limpiamos los campos y volvemos a poner los bordes en negro
             select.value = "---";
@@ -119,3 +197,7 @@ btnEnviar.addEventListener("click", (event) => {
         alert("Todos los campos son obligatorios");
     }
 })
+
+for(let indice = 0; indice < usuarios.length; indice++){
+    usuarios[indice].mostrarCuenta(gastoUsuario, gastoDebido, indice);
+}
