@@ -82,6 +82,7 @@ class Usuario {
 
 
     calcularGastos() {
+        debugger;
         //Gasto total que hay que pagar entre todos los usuarios
         let gastoTotal = 0;
         //Gasto que tendra que pagar cada usuario
@@ -107,6 +108,7 @@ class Usuario {
             }
             //Calculamos lo que debe cada uno restando lo que tiene que pagar cada uno por lo que ya ha pagado
             gastoDebido = gastoUsuario - gastoPorPersona;
+            
             //Obtengo el parrafo por su id dinamico
             let parrafo = document.getElementById(`parrafo${indice}`);
             //Si el gastoDebido es mayor que cero implica que se te debe dinero
@@ -116,7 +118,8 @@ class Usuario {
             
             //Si el gastoDebido es menor que cero implica que debes dinero
             }else if(gastoDebido < 0){
-                parrafo.textContent = parrafo.textContent = "Ha pagado " + gastoUsuario + " debe " + gastoDebido.toFixed(2);
+                //Multiplicamos el gastoDebido por -1 para que al mostrarlo no aparezca con valores negativos
+                parrafo.textContent = parrafo.textContent = "Ha pagado " + gastoUsuario + " debe " + gastoDebido.toFixed(2) * -1;
                 
             }else{
                 parrafo.textContent = parrafo.textContent = "Ha pagado todo y no debe nada";
@@ -147,6 +150,7 @@ class Gasto {
 let btnEnviar = document.getElementById("btnEnviar");
 //Añadimos el evento al boton de enviar para que compruebe si los campos son correctos con expresiones regulares
 btnEnviar.addEventListener("click", (event) => {
+    //Ponemos el preventDefault para que cuando pulsemos el boton de enviar no vuelva a recargar la pagina
     event.preventDefault();
     let inputTitulo = document.getElementById("inputTitulo");
     let inputImporte = document.getElementById("inputImporte");
@@ -155,30 +159,37 @@ btnEnviar.addEventListener("click", (event) => {
     let regexImporte = /^(?:1000\.00|[0-9]{1,3}\.[0-9]{2})$/;
     let regexFecha = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/;
     let valido = true;
-    if (!inputFecha.value == "" || !inputImporte.value == "" || !inputTitulo.value == "") {
+    if (!inputFecha.value == "" && !inputImporte.value == "" && !inputTitulo.value == "") {
         if (regexTitulo.test(inputTitulo.value)) {
-            inputTitulo.style.borderColor = "green";
+            inputTitulo.setAttribute("class", "inputValid");
+            //inputTitulo.style.borderColor = "green";
         } else {
-            inputTitulo.style.borderColor = "red";
+            inputTitulo.setAttribute("class", "inputError");
+            //inputTitulo.style.borderColor = "red";
             valido = false;
         }
 
         if (regexImporte.test(inputImporte.value)) {
-            inputImporte.style.borderColor = "green";
+            inputImporte.setAttribute("class", "inputValid");
+            //inputImporte.style.borderColor = "green";
         } else {
-            inputImporte.style.borderColor = "red";
+            inputImporte.setAttribute("class", "inputError");
+           //inputImporte.style.borderColor = "red";
             valido = false;
         }
 
         if (regexFecha.test(inputFecha.value)) {
-            inputFecha.style.borderColor = "green";
+            inputFecha.setAttribute("class", "inputValid");
+            //inputFecha.style.borderColor = "green";
         } else {
-            inputFecha.style.borderColor = "red";
+            inputFecha.setAttribute("class", "inputError");
+            //inputFecha.style.borderColor = "red";
             valido = false;
         }
         //Si todos los campos estan bien mostraremos el resumen y añadiremos el gasto al usuario
         if (valido == true) {
             let select = document.getElementById("selectUsuarios");
+            if(select.value != "---"){
             //Buscamos la posicion en el array del usuario que tiene el nombre igual al valor seleccionado en el select
             let posicion = usuarios.findIndex(usuario => usuario.nombre === select.value);
             usuarios[posicion].añadirGasto();
@@ -187,12 +198,18 @@ btnEnviar.addEventListener("click", (event) => {
             //Limpiamos los campos y volvemos a poner los bordes en negro
             select.value = "---";
             inputFecha.value = "";
-            inputFecha.style.borderColor = "black";
+            inputFecha.setAttribute("class", "input");
+            //inputFecha.style.borderColor = "black";
             inputImporte.value = "";
-            inputImporte.style.borderColor = "black";
+            inputImporte.setAttribute("class", "input");
+            //inputImporte.style.borderColor = "black";
             inputTitulo.value = "";
-            inputTitulo.style.borderColor = "black";
+            inputTitulo.setAttribute("class", "input");
+            //inputTitulo.style.borderColor = "black";
+        }else{
+            alert("Selecciona un usuario valido");
         }
+    }
     } else {
         alert("Todos los campos son obligatorios");
     }
