@@ -103,12 +103,12 @@ class Usuario {
         for (let indice = 0; indice < usuarios.length; indice++) {
             //Gasto total de cada usuario
             gastoUsuario = 0;
+            //En cada vuelta se calcula todo lo que ha gastado un usuario 
             for (let i = 0; i < usuarios[indice].gastos.length; i++) {
                 gastoUsuario += parseFloat(usuarios[indice].gastos[i].monto);
             }
             //Calculamos lo que debe cada uno restando lo que tiene que pagar cada uno por lo que ya ha pagado
             gastoDebido = gastoUsuario - gastoPorPersona;
-            
             //Obtengo el parrafo por su id dinamico
             let parrafo = document.getElementById(`parrafo${indice}`);
             //Si el gastoDebido es mayor que cero implica que se te debe dinero
