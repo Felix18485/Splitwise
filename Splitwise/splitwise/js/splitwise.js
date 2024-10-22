@@ -8,8 +8,6 @@ class Usuario {
         this.pathImg = pathImg;
     }
 
-    // Completar con los métodos necesarios
-
     //Metodo para añadir el gasto al usuario
     añadirGasto() {
         let importe = document.getElementById("inputImporte");
@@ -40,7 +38,7 @@ class Usuario {
         parrafo.setAttribute("class", "card-text");
         let inputImporte = document.getElementById("inputImporte");
         let inputFecha = document.getElementById("inputFecha");
-        parrafo.textContent = "Pagó " + inputImporte.value + " el " + inputFecha.value;
+        parrafo.textContent = "Pagó " + inputImporte.value + "€ el " + inputFecha.value;
         divImagen.append(imagen);
         divCartaCuerpo.append(tituloCarta, parrafo);
         divCarta.append(divCartaCuerpo);
@@ -70,7 +68,7 @@ class Usuario {
         let parrafo = document.createElement("p");
         parrafo.setAttribute("id",`parrafo${indice}`);
         parrafo.setAttribute("class", "card-text");
-        parrafo.textContent = "Ha pagado " + gastoUsuario + " se le debe " + gastoDebido;
+        parrafo.textContent = "Ha pagado " + gastoUsuario + "€ se le debe " + gastoDebido+"€";
         divImagen.append(imagen);
         divCartaCuerpo.append(tituloCarta, parrafo);
         divCarta.append(divCartaCuerpo);
@@ -114,12 +112,12 @@ class Usuario {
             //Si el gastoDebido es mayor que cero implica que se te debe dinero
             if(gastoDebido > 0){
                 //Utilizamos toFixed() en el gasto debido para que se quede solo con dos decimales
-                parrafo.textContent = parrafo.textContent = "Ha pagado " + gastoUsuario + " se le debe " + gastoDebido.toFixed(2);
+                parrafo.textContent = parrafo.textContent = "Ha pagado " + gastoUsuario + "€ se le debe " + gastoDebido.toFixed(2)+"€";
             
             //Si el gastoDebido es menor que cero implica que debes dinero
             }else if(gastoDebido < 0){
                 //Multiplicamos el gastoDebido por -1 para que al mostrarlo no aparezca con valores negativos
-                parrafo.textContent = parrafo.textContent = "Ha pagado " + gastoUsuario + " debe " + gastoDebido.toFixed(2) * -1;
+                parrafo.textContent = parrafo.textContent = "Ha pagado " + gastoUsuario + "€ debe " + gastoDebido.toFixed(2) * -1+"€";
                 
             }else{
                 parrafo.textContent = parrafo.textContent = "Ha pagado todo y no debe nada";
@@ -129,7 +127,7 @@ class Usuario {
 
 }
 
-
+//Creamos los usuarios 
 let juan = document.getElementById("Juan");
 let ana = document.getElementById("Ana");
 let sara = document.getElementById("Sara");
@@ -155,9 +153,11 @@ btnEnviar.addEventListener("click", (event) => {
     let inputTitulo = document.getElementById("inputTitulo");
     let inputImporte = document.getElementById("inputImporte");
     let inputFecha = document.getElementById("inputFecha");
+    //Creamos las expresiones regulares para la comprobacion del valor de los inputs
     let regexTitulo = /^[a-zA-Z0-9\s]{1,20}$/;
     let regexImporte = /^(?:1000\.00|[0-9]{1,3}\.[0-9]{2})$/;
     let regexFecha = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/;
+    //Creamos la variable valido que se pondra a false en el caso de que alguno de los campos este vacio
     let valido = true;
     if (!inputFecha.value == "" && !inputImporte.value == "" && !inputTitulo.value == "") {
         if (regexTitulo.test(inputTitulo.value)) {
