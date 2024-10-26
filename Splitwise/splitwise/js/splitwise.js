@@ -80,7 +80,6 @@ class Usuario {
 
 
     calcularGastos() {
-        debugger;
         //Gasto total que hay que pagar entre todos los usuarios
         let gastoTotal = 0;
         //Gasto que tendra que pagar cada usuario
